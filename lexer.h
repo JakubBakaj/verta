@@ -8,6 +8,8 @@ typedef enum {
     TK_KW_FN,
     TK_KW_LET,
     TK_KW_RET,
+    TK_KW_EXT,
+    TK_KW_CONST,
 
     //symbols
     TK_SYM_LPAREN,   // (
@@ -29,6 +31,7 @@ typedef enum {
     TK_EOF,
     //others
     TK_ARROW,       // ->
+    TK_VARARG,      // ...
 } TokenType;
 
 

@@ -46,7 +46,12 @@ Vector tokenize(const char *source) {
                 token->type = TK_KW_LET;
             } else if (strcmp(token->value, "ret") == 0) {
                 token->type = TK_KW_RET;
-            } else {
+            } else if(strcmp(token->value, "ext") == 0) {
+                token->type = TK_KW_EXT;
+            } else if(strcmp(token->value, "const") == 0) {
+                token->type = TK_KW_CONST;
+            }
+            else {
                 token->type = TK_IDENT;
             }
             vector_push(&tokens, token);
@@ -63,7 +68,13 @@ Vector tokenize(const char *source) {
             token->type = TK_INT_LITERAL;
             vector_push(&tokens, token);
             continue;
-        } else {
+        } else if(current == '.' && source[pos + 1] == '.' && source[pos + 2] == '.')/*ther should be check if pos + 1 etc exsists*/ {
+            token->type = TK_VARARG;
+            token->value = (char *)malloc(4);
+            strcpy(token->value, "...");
+            pos += 2;
+        }
+        else {
 
         // Symbols
         switch (current) {
