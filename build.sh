@@ -1,2 +1,2 @@
 mkdir -p bin
-gcc -std=c17 -Wall -Wextra -o bin/vertac main.c
+gcc -std=c17 -Wall -Wextra -o bin/vertac main.c lexer.c utils.c
