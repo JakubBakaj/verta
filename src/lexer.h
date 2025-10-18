@@ -28,6 +28,7 @@ typedef enum {
     //identifiers and literals
     TK_IDENT,
     TK_INT_LITERAL,
+    TK_STRING_LITERAL,
     TK_EOF,
     //others
     TK_ARROW,       // ->

@@ -74,6 +74,24 @@ Vector tokenize(const char *source) {
             strcpy(token->value, "...");
             pos += 2;
         }
+        else if(current == '\"') {
+            // String literal
+            size_t start = pos + 1; // skip opening quote
+            pos++;
+            while (source[pos] != '\"' && pos < length) {
+                // Handle escape sequences
+                if (source[pos] == '\\' && pos + 1 < length) {
+                    pos += 2; // skip escaped character
+                } else {
+                    pos++;
+                }
+            }
+            size_t len = pos - start;
+            token->value = (char *)malloc(len + 1);
+            strncpy(token->value, &source[start], len);
+            token->value[len] = '\0';
+            token->type = TK_STRING_LITERAL;
+        }
         else {
 
         // Symbols
