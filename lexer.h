@@ -1,6 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "utils.h"
+
 typedef enum {
     //keywords
     TK_KW_FN,
@@ -35,4 +37,7 @@ typedef struct {
     char *value;
     unsigned int pos;
 } Token;
+
+// Tokenize the given source string and return a Vector of Token*.
+Vector tokenize(const char *source);
 #endif // LEXER_H

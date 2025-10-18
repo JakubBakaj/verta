@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <stddef.h>
+#include <stdio.h>
 typedef struct
 {
     void **data;
@@ -9,8 +10,13 @@ typedef struct
 } Vector; //replacement for C++ std::vector
 
 void vector_init(Vector *vec);
-void vector_push_back(Vector *vec, void *value);
+void vector_push(Vector *vec, void *item);
+void *vector_get(Vector *vec, size_t index);
 void vector_free(Vector *vec);
-void vector_get(Vector *vec, size_t index);
+
+// Read a single line (including '\n') from FILE. Returns a heap-allocated
+// NUL-terminated string which must be freed by the caller. Returns NULL on EOF
+// or allocation error.
+char *read_lines(FILE *file);
 
 #endif // UTILS_H
