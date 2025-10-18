@@ -1,0 +1,38 @@
+#ifndef LEXER_H
+#define LEXER_H
+
+typedef enum {
+    //keywords
+    TK_KW_FN,
+    TK_KW_LET,
+    TK_KW_RET,
+
+    //symbols
+    TK_SYM_LPAREN,   // (
+    TK_SYM_RPAREN,   // )
+    TK_SYM_LBRACE,   // {
+    TK_SYM_RBRACE,   // }
+    TK_SYM_SEMI,     // ;
+    TK_SYM_COMMA,    // ,
+    TK_SYM_ASSIGN,   // =
+    TK_SYM_PLUS,     // +
+    TK_SYM_MINUS,    // -
+    TK_SYM_ASTERISK, // *
+    TK_SYM_SLASH,    // /
+    TK_SYM_COLON,    // :
+
+    //identifiers and literals
+    TK_IDENT,
+    TK_INT_LITERAL,
+    TK_EOF,
+    //others
+    TK_ARROW,       // ->
+} TokenType;
+
+
+typedef struct {
+    TokenType type;
+    char *value;
+    unsigned int pos;
+} Token;
+#endif // LEXER_H
