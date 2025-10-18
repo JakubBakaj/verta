@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 
     
     // Tokenize the file
-    Vector tokens = tokenize(source);
+    Vector tokens = tokenize(source, argv[2]);
     for (size_t i = 0; i < tokens.size; i++) {
         Token *token = (Token *)vector_get(&tokens, i);
         if (token) {

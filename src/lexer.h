@@ -43,5 +43,5 @@ typedef struct {
 } Token;
 
 // Tokenize the given source string and return a Vector of Token*.
-Vector tokenize(const char *source);
+Vector tokenize(const char *source, const char *filename);
 #endif // LEXER_H

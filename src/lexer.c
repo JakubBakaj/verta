@@ -9,7 +9,7 @@
 
 void vector_push(Vector *vec, void *item);
 
-Vector tokenize(const char *source) {
+Vector tokenize(const char *source, const char *filename) {
     Vector tokens;
     vector_init(&tokens);
 
