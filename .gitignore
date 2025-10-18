@@ -1,0 +1,19 @@
+# compilation 
+*.o
+*.out
+*.exe
+
+# build folders
+build/
+bin/
+
+# tmp files
+*.swp
+*~
+.vscode/
+
+# others
+.DS_Store
+
+# tests
+tests/
