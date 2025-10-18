@@ -1,38 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-char *read_lines(FILE *plik) {
-    size_t size = 128;
-    size_t dl = 0;
-    char *line = (char *)malloc(size);
-    if (!line) return NULL;
-
-    int ch;
-    while ((ch = fgetc(plik)) != EOF) {
-        if (dl + 1 >= size) {
-            size *= 2;
-            char *new_ = (char *)realloc(line, size);
-            if (!new_) {
-                free(line);
-                return NULL;
-            }
-            line = new_;
-        }
-
-        line[dl++] = ch;
-        if (ch == '\n') break;
-    }
-
-    if (dl == 0 && ch == EOF) {
-        free(line);
-        return NULL;
-    }
-
-    line[dl] = '\0';
-    return line;
-}
-
+#ifndef UTILS_H
+#include "utils.h"
+#endif
+char *read_lines(FILE *file);
 int main(int argc, char *argv[]) {
     // vertac -c input.vrt -o file.elf
     if (argc != 5 || strcmp(argv[1], "-c") != 0 || strcmp(argv[3], "-o") != 0) {
