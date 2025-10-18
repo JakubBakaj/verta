@@ -51,10 +51,7 @@ Vector tokenize(const char *source) {
             }
             vector_push(&tokens, token);
             continue;
-        }
-
-        // Integer literals
-        if (isdigit(current)) {
+        }else if (isdigit(current)) {
             size_t start = pos;
             while (isdigit(source[pos])) {
                 pos++;
@@ -66,7 +63,7 @@ Vector tokenize(const char *source) {
             token->type = TK_INT_LITERAL;
             vector_push(&tokens, token);
             continue;
-        }
+        } else {
 
         // Symbols
         switch (current) {
@@ -95,6 +92,7 @@ Vector tokenize(const char *source) {
                 pos++;
                 continue;
         }
+    }
         pos++;
         vector_push(&tokens, token);
     }
