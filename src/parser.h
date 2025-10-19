@@ -1,5 +1,8 @@
-#ifndef UTILS_C
-#define UTILS_C
 #include "utils.h"
-#endif // UTILS_C
+#include "lexer.h"
 
+#ifndef PARSER_H
+#define PARSER_H
+Vector parse(Vector *tokens, const char *filename);
+#endif // PARSER_H
+`

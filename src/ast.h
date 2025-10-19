@@ -17,7 +17,7 @@ typedef enum{
 } NodeType;
 
 typedef struct {
-
+    NodeType type;
 } Node;
 
 #endif // AST_H
