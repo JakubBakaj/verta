@@ -8,6 +8,7 @@
 #ifndef LEXER_H
 #include "lexer.h"
 #endif
+#include "parser.h"
 
 int main(int argc, char *argv[]) {
     // vertac -c input.vrt -o file.elf
@@ -50,6 +51,8 @@ int main(int argc, char *argv[]) {
             free(token);
         }
     }
+    // Parse the tokens into an AST
+    Vector ast = parse(&tokens, argv[2]);
     vector_free(&tokens);
     free(source);
 
