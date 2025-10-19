@@ -6,6 +6,25 @@
 #include <stdio.h>
 #define INITIAL_CAPACITY 4
 
+typedef struct
+{
+    unsigned int line;
+    unsigned int column;
+} line_col;
+
+line_col get_line_col(const char *source, size_t pos) {
+    line_col lc = {1, 1};
+    for (size_t i = 0; i < pos; i++) {
+        if (source[i] == '\n') {
+            lc.line++;
+            lc.column = 1;
+        } else {
+            lc.column++;
+        }
+    }
+    return lc;
+}
+
 void vector_init(Vector *vec) {
     vec->size = 0;
     vec->capacity = INITIAL_CAPACITY;
@@ -65,6 +84,7 @@ char *read_lines(FILE *file) {
     line[dl] = '\0';
     return line;
 }
+
 
 
 #endif // UTILS_C

@@ -1,6 +1,6 @@
 #ifndef AST_H
 #define AST_H
-
+#include "utils.h"
 typedef enum{
     ND_FN_DECL,
     ND_VAR_DECL,
@@ -18,6 +18,7 @@ typedef enum{
 
 typedef struct {
     NodeType type;
+    Vector children;
 } Node;
 
 #endif // AST_H
