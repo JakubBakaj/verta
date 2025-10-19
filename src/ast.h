@@ -20,6 +20,8 @@ typedef enum{
 typedef struct {
     NodeType type;
     Vector children;
+    __int64_t int_value;
+    char* str_value;
 } Node;
 
 #endif // AST_H
