@@ -6,14 +6,9 @@
 #include <stdio.h>
 #define INITIAL_CAPACITY 4
 
-typedef struct
-{
-    unsigned int line;
-    unsigned int column;
-} line_col;
 
-line_col get_line_col(const char *source, size_t pos) {
-    line_col lc = {1, 1};
+LineCol get_line_col(const char *source, size_t pos) {
+    LineCol lc = {1, 1};
     for (size_t i = 0; i < pos; i++) {
         if (source[i] == '\n') {
             lc.line++;
@@ -54,7 +49,8 @@ void vector_free(Vector *vec) {
     vec->capacity = 0;
 }
 
-char *read_lines(FILE *file) {
+char *read_lines(char *file_path) {
+     FILE *file = fopen(file_path, "r");
     size_t size = 128;
     size_t dl = 0;
     char *line = (char *)malloc(size);

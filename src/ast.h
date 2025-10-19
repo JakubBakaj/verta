@@ -14,6 +14,7 @@ typedef enum{
     ND_STRING_LITERAL,
     ND_IDENT_EXPR,
     ND_CALL_EXPR,
+    ND_PROGRAM
 } NodeType;
 
 typedef struct {
