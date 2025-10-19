@@ -10,7 +10,7 @@ Token consume_token(Vector *tokens, TokenType expected_type, char error_msg[]);
 void advance();
 Node *parse_fn(Vector* tokens);
 Node parse_type(Vector* tokens);
-Vector *parse_body(Vector* tokens);
+Node *parse_body(Vector* tokens);
 Node *parse_stmt(Vector* tokens);
 Node *parse_return(Vector* tokens);
 Node parse_expr(Vector* tokens);

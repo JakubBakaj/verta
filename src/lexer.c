@@ -92,36 +92,84 @@ Vector tokenize(const char *source, const char *filename) {
             token->value[len] = '\0';
             token->type = TK_STRING_LITERAL;
         }
-        else {
-
-        // Symbols
-        switch (current) {
-            case '(': token->type = TK_SYM_LPAREN; break;
-            case ')': token->type = TK_SYM_RPAREN; break;
-            case '{': token->type = TK_SYM_LBRACE; break;
-            case '}': token->type = TK_SYM_RBRACE; break;
-            case ';': token->type = TK_SYM_SEMI; break;
-            case ',': token->type = TK_SYM_COMMA; break;
-            case '=': token->type = TK_SYM_ASSIGN; break;
-            case '+': token->type = TK_SYM_PLUS; break;
-            case '-':
-                if (source[pos + 1] == '>') {
-                    token->type = TK_ARROW;
-                    pos++;
-                } else {
-                    token->type = TK_SYM_MINUS;
-                }
-                break;
-            case '*': token->type = TK_SYM_ASTERISK; break;
-            case '/': token->type = TK_SYM_SLASH; break;
-            case ':': token->type = TK_SYM_COLON; break;
-            default:
-                printf("Unknown character: %c at position %d\n", current, pos);
-                free(token);
+else {
+    // Symbols
+    switch (current) {
+        case '(': 
+            token->type = TK_SYM_LPAREN;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "(");
+            break;
+        case ')': 
+            token->type = TK_SYM_RPAREN;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, ")");
+            break;
+        case '{': 
+            token->type = TK_SYM_LBRACE;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "{");
+            break;
+        case '}': 
+            token->type = TK_SYM_RBRACE;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "}");
+            break;
+        case ';': 
+            token->type = TK_SYM_SEMI;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, ";");
+            break;
+        case ',': 
+            token->type = TK_SYM_COMMA;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, ",");
+            break;
+        case '=': 
+            token->type = TK_SYM_ASSIGN;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "=");
+            break;
+        case '+': 
+            token->type = TK_SYM_PLUS;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "+");
+            break;
+        case '-':
+            if (source[pos + 1] == '>') {
+                token->type = TK_ARROW;
+                token->value = (char *)malloc(3);
+                strcpy(token->value, "->");
                 pos++;
-                continue;
-        }
+            } else {
+                token->type = TK_SYM_MINUS;
+                token->value = (char *)malloc(2);
+                strcpy(token->value, "-");
+            }
+            break;
+        case '*': 
+            token->type = TK_SYM_ASTERISK;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "*");
+            break;
+        case '/': 
+            token->type = TK_SYM_SLASH;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, "/");
+            break;
+        case ':': 
+            token->type = TK_SYM_COLON;
+            token->value = (char *)malloc(2);
+            strcpy(token->value, ":");
+            break;
+        default:
+            printf("Unknown character: %c at position %d\n", current, pos);
+            free(token);
+            pos++;
+            continue;
     }
+}
+
         pos++;
         vector_push(&tokens, token);
     }

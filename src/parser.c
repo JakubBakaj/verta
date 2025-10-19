@@ -8,6 +8,7 @@ char* file_name;
 size_t token_index = 0;
 
 Vector parse(Vector *tokens, const char *filename) {
+    token_index = 0;
     printf("Parsing tokens from file: %s\n", filename);
     Vector ast;
     file_name = (char *)filename;
@@ -21,12 +22,11 @@ Vector parse(Vector *tokens, const char *filename) {
     vector_init(&root->children);
     vector_push(&ast, root);
     while (token_index < tokens->size) {
-        Node *stmt = (Node *)malloc(sizeof(Node));
+        Node *stmt = parse_stmt(tokens);
         if(!stmt) {
             fprintf(stderr, "Error: could not allocate memory for statement node in file %s\n", file_name);
             exit(EXIT_FAILURE);
         }
-        stmt = parse_stmt(tokens);
         vector_push(&root->children, stmt);
     }
     return ast;
@@ -66,29 +66,30 @@ Node *parse_fn(Vector* tokens) {
     return fn_node;
 }
 
-Vector *parse_body(Vector* tokens) {
-    Vector *body = (Vector *)malloc(sizeof(Vector));
-    vector_init(body);
+Node *parse_body(Vector* tokens) {
     consume_token(tokens, TK_SYM_LBRACE, "Expected '{'");
-    for(;;){
+    Node *block_node = (Node *)malloc(sizeof(Node));
+    if (!block_node) {
+        fprintf(stderr, "Error: could not allocate memory for block node in file %s\n", file_name);
+        exit(EXIT_FAILURE);
+    }
+    block_node->kind = ND_BLOCK_STMT;
+    vector_init(&block_node->children);
+
+    for (;;) {
         Token *current = peek_token(tokens, 0);
-        if(current == NULL) {
+        if (current == NULL) {
             fprintf(stderr, "Error: Unexpected end of tokens in file %s\n", file_name);
             exit(EXIT_FAILURE);
-        } else if(current->type == TK_SYM_RBRACE) {
+        } else if (current->type == TK_SYM_RBRACE) {
             advance();
             break;
         } else {
-            Node *stmt = (Node *)malloc(sizeof(Node));
-            if(!stmt) {
-                fprintf(stderr, "Error: could not allocate memory for statement node in file %s\n", file_name);
-                exit(EXIT_FAILURE);
-            }
-            stmt = parse_stmt(tokens);
-            vector_push(body, stmt);
+            Node *stmt = parse_stmt(tokens);
+            vector_push(&block_node->children, stmt);
         }
     }
-    return body;
+    return block_node;
 }
 
 
@@ -119,6 +120,10 @@ Node parse_expr(Vector* tokens) {
         exit(EXIT_FAILURE);
     }
     if(current->type == TK_INT_LITERAL) {
+        if (current->value == NULL) {
+            fprintf(stderr, "Error: Integer literal token with NULL value at position %zu\n", current->pos);
+            exit(EXIT_FAILURE);
+        }
         Node int_node;
         int_node.kind = ND_INT_LITERAL;
         int_node.int_value = atoll(current->value);
@@ -126,6 +131,10 @@ Node parse_expr(Vector* tokens) {
         advance();
         return int_node;
     } else if(current->type == TK_STRING_LITERAL) {
+        if (current->value == NULL) {
+            fprintf(stderr, "Error: String literal token with NULL value at position %zu\n", current->pos);
+            exit(EXIT_FAILURE);
+        }
         Node str_node;
         str_node.kind = ND_STRING_LITERAL;
         str_node.str_value = current->value;
@@ -134,10 +143,12 @@ Node parse_expr(Vector* tokens) {
         return str_node;
     } else {
         LineCol lc = get_line_col(read_lines(file_name), current->pos);
-        fprintf(stderr, "Error: Unexpected token '%s' at <%d, %d> in file %s\n", current->value, lc.line,lc.column, file_name);
+        fprintf(stderr, "Error: Unexpected token '%s' at <%d, %d> in file %s\n",
+            current->value ? current->value : "(null)", lc.line,lc.column, file_name);
         exit(EXIT_FAILURE);
     }
 }
+
 
 Token *peek_token(Vector *tokens, size_t offset) {
     size_t idx = token_index + offset;
@@ -149,13 +160,13 @@ Token *peek_token(Vector *tokens, size_t offset) {
 
 
 Token consume_token(Vector *tokens, TokenType expected_type, char error_msg[]) {
-    Token *token = peek_token(tokens, token_index);
+    Token *token = peek_token(tokens, 0);
     if (token == NULL || token->type != expected_type) {
         LineCol lc = get_line_col(read_lines(file_name), token ? token->pos : 0);
         fprintf(stderr, "Error: %s at <%d, %d> in file %s\n", error_msg, lc.line, lc.column, file_name);
         exit(EXIT_FAILURE);
     }
-    token_index++;
+    advance();
     return *token;
 }
 
